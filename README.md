@@ -8,7 +8,8 @@
 2. **Build & Run:**
    ```bash
    dotnet build
-   dotnet run --project Infonetica.WorkflowEngine
+   dotnet run    after changing the directory to  ./Workflow-System-main/Infonetica.WorkflowEngine
+   ```
    ```
    The API will start and listen on the default port (see launchSettings.json for details).
 
