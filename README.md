@@ -1,80 +1,31 @@
-# Infonetica Workflow Engine (State-Machine API)
-
-A minimal backend service for defining and running configurable workflows as state machines. Example: food order processing for a food company.
+# Infonetica Workflow Engine
 
 ## Quick Start
 
-### Prerequisites
-- [.NET 8 SDK](https://dotnet.microsoft.com/en-us/download/dotnet/8.0)
+1. **Requirements:**
+   - [.NET 8.0 SDK](https://dotnet.microsoft.com/en-us/download/dotnet/8.0)
 
-### Run the API
-```bash
-dotnet run --project Infonetica.WorkflowEngine
-```
+2. **Build & Run:**
+   ```bash
+   dotnet build
+   dotnet run --project Infonetica.WorkflowEngine
+   ```
+   The API will start and listen on the default port (see launchSettings.json for details).
 
-### API Overview
+3. **Configuration:**
+   - Edit `appsettings.json` or `appsettings.Development.json` for environment-specific settings.
 
-#### 1. Define a Workflow
-- **POST /workflows**
-  - Body: `{ id, name, states, actions }`
-  - See sample below.
+## Assumptions, Shortcuts, and Known Limitations
 
-#### 2. List Workflows
-- **GET /workflows**
-
-#### 3. Get Workflow by ID
-- **GET /workflows/{id}**
-
-#### 4. Start Workflow Instance
-- **POST /workflows/{id}/instances**
-
-#### 5. List Instances
-- **GET /instances**
-
-#### 6. Get Instance by ID
-- **GET /instances/{id}**
-
-#### 7. Execute Action on Instance
-- **POST /instances/{id}/actions/{actionId}**
-
-## Sample: Food Order Workflow
-
-A sample workflow is preloaded on startup:
-- **States:** created → preparing → delivering → delivered
-- **Actions:** start-prep, send-out, mark-delivered
-
-## Example: Create a Workflow
-```json
-{
-  "id": "food-order",
-  "name": "Food Order Processing",
-  "states": [
-    { "id": "created", "name": "Order Created", "isInitial": true, "isFinal": false, "enabled": true },
-    { "id": "preparing", "name": "Preparing Food", "isInitial": false, "isFinal": false, "enabled": true },
-    { "id": "delivering", "name": "Out for Delivery", "isInitial": false, "isFinal": false, "enabled": true },
-    { "id": "delivered", "name": "Delivered", "isInitial": false, "isFinal": true, "enabled": true }
-  ],
-  "actions": [
-    { "id": "start-prep", "name": "Start Preparing", "enabled": true, "fromStates": ["created"], "toState": "preparing" },
-    { "id": "send-out", "name": "Send Out for Delivery", "enabled": true, "fromStates": ["preparing"], "toState": "delivering" },
-    { "id": "mark-delivered", "name": "Mark as Delivered", "enabled": true, "fromStates": ["delivering"], "toState": "delivered" }
-  ]
-}
-```
-
-## Assumptions & Notes
-- In-memory storage (no DB). Data resets on restart.
-- Validation: unique IDs, one initial state, valid transitions, etc.
-- Minimal error handling for clarity.
-- Extendable for more features (e.g., persistence, more validation).
-
-## Limitations
-- No authentication or authorization.
-- No database or persistent storage.
-- No UI (API only).
+- Assumes a local development environment with .NET 8.0 installed.
+- No database or external service integration is required for initial run.
+- API documentation (Swagger UI) is available by default in the Development environment.
+  - Access it at: `http://localhost:5087/swagger` (or the port specified in your launchSettings.json).
+  - Swagger is enabled by default in `appsettings.Development.json` and may be disabled in production for security reasons.
+  - To enable/disable Swagger, adjust the relevant settings in your `Program.cs` or configuration files.
+  - Environment can be set using the `ASPNETCORE_ENVIRONMENT` variable (e.g., `Development`, `Production`).
+- For any ambiguity, see comments in code or contact the author.
 
 ---
 
-**For exercise review:**
-- See `Program.cs` for all logic (minimal API style).
-- All requirements from the exercise are addressed. 
+**Repository URL:** https://github.com/krisdheniya/Workflow-System.git 
